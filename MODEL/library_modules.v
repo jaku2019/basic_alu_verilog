@@ -22,11 +22,37 @@ module nand #(
     output reg signed [WIDTH-1:0] o_y
 (
     always @(*) begin
-        o_y = ~(A & B);
+        o_y = ~(A & B);                 // NAND = ~AND
     end
 )
 endmodule
 
+// liczba wiodacych jedynek wektora {B,A} liczac od MSB, czyli wiodacy
+module starting_ones #(
+    parameter WIDTH = 4
+)
+    input wire signed [WIDTH-1:0] i_a,
+    input wire signed [WIDTH-1:0] i_b,
+    output reg        [WIDTH-1:0] o_y
+(
+    reg [WIDTH+WIDTH-1:0] c,
+    integer i,
+    integer count,
+
+    always @(*) begin
+        // polaczenie wektorow
+        c = {i_b, i_a};
+        count = 0;
+    // sprawdz od MSB ile jest 1, a jesli pojawi sie 0 to przerwij fora = przestan liczyc
+        for (i = WIDTH+WIDTH-1; i >= 0; i = i-1)
+            if c[i] == 1
+                count = count + 1
+            else break;
+            
+        o_y = count;
+    end
+)
+endmodule
 
 
 
