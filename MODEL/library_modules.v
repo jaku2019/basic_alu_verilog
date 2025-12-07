@@ -1,3 +1,20 @@
+// Y = A - B czyli odejmowacz
+module subtractor #(
+    parameter WIDTH = 4
+)
+(
+    input wire signed [WIDTH-1:0] i_a,
+    input wire signed [WIDTH-1:0] i_b,
+    output reg signed [WIDTH-1:0] o_y
+)
+always @(*) begin
+    o_y = i_a - i_b;
+end
+
+endmodule
+
+
+
 /*
     Modul rejestru potokowego z kontrola przeplywu
     danych synchronicznym protokolem READY-VALID
