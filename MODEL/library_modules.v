@@ -13,6 +13,21 @@ end
 
 endmodule
 
+// Y = A nand B czyli nandownik
+module nand #(
+    parameter WIDTH = 4
+)
+    input wire signed [WIDTH-1:0] i_a,
+    input wire signed [WIDTH-1:0] i_b,
+    output reg signed [WIDTH-1:0] o_y
+(
+    always @(*) begin
+        o_y = ~(A & B);
+    end
+)
+endmodule
+
+
 
 
 /*
