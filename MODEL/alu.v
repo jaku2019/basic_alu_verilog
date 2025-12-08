@@ -48,8 +48,9 @@ module TOP #(
                 .o_overflow(o_overflow)
                 .o_err(o_err)                    
             )
-            default: assign y = 0;
-        i
+            default: assign o_y = 0;
+        o_pos = ~o_y[WIDTH-1] & (o_y != 0);
+        o_neg = o_y[WIDTH-1] & (o_y != 0);
         endcase
     end
 endmodule
