@@ -7,12 +7,13 @@ module subtractor #(
     input wire signed [WIDTH-1:0] i_b,
     output reg signed [WIDTH-1:0] o_y,
     output reg                    o_overflow,
-    output reg                    o_err
+    output reg                    o_err             // nie dotyczy
 );
     always @(*) begin
         o_y = i_a - i_b;
         // overflow bedzie widac gdy przy przeciwnych znakach A, B Y bedzie miala znak przeciwny do A
-        o_overflow = (i_a[WIDTH-1] != i_b[WIDTH-1]) && (i_a[WIDTH-1] != o_y[WIDTH-1]); 
+        o_overflow = (i_a[WIDTH-1] != i_b[WIDTH-1]) && (i_a[WIDTH-1] != o_y[WIDTH-1]);
+        o_err = 1'b0;
     end
 endmodule
 
@@ -25,11 +26,12 @@ module nand #(
     input wire signed [WIDTH-1:0] i_b,
     output reg signed [WIDTH-1:0] o_y,
     output reg                    o_overflow,   // nie dotyczy
-    output reg                    o_err
+    output reg                    o_err         // nie dotyczy
 );
     always @(*) begin
         o_y = ~(A & B);                 // NAND = ~AND
         o_overflow = 1'b0;
+        o_err = 1'b0;
     end
 endmodule
 
@@ -41,8 +43,8 @@ module starting_ones #(
     input wire signed [WIDTH-1:0] i_a,
     input wire signed [WIDTH-1:0] i_b,
     output reg        [WIDTH-1:0] o_y,
-    output reg                    o_overflow,       // nie dotyczy 
-    output reg                    o_err
+    output reg                    o_overflow, 
+    output reg                    o_err             // nie dotyczy
 );
     reg [WIDTH+WIDTH-1:0] c,
     integer i,
@@ -61,6 +63,7 @@ module starting_ones #(
 
         // ustaw overflow 1, jesli wiodących jedynek będzie więcej niż maksymanla warosc o_y (na razie WIDTH)
         o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0
+        o_err = 1'b0;
         o_y = count[WIDTH-1:0];
     end
 endmodule
