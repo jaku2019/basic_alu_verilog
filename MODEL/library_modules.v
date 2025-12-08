@@ -13,7 +13,7 @@ end
 
 endmodule
 
-// Y = A nand B czyli nandownik
+// Y = A nand B czyli nandownik :)
 module nand #(
     parameter WIDTH = 4
 )
@@ -48,14 +48,47 @@ module starting_ones #(
             if c[i] == 1
                 count = count + 1
             else break;
-            
+
         o_y = count;
     end
 )
 endmodule
 
+// onehot do u2 (a w zasadzie do nkb, bo nie moze byc ujemnych), czyli dekoder
+module onehot2u2_decoder #(
+    parameter LEN = 8
+    // WIDTH musi wynosic tyle co log2(LEN+LEN)
+    parameter WIDTH = 4,
 
+)
+(
+    input wire [LEN-1:0] i_a_oh,
+    input wire [LEN-1:0] i_b_oh,
+    output reg [WIDTH-1:0] o_y_u2,
+    output reg             o_err             // byc może przydaa sie do flagi err
+)
+    reg s_was1;
+    integer i;
+    wire i_onehot;
+    always @(*) begin
+        // wyzeruj wartosci 
+        o_y_u2 = WIDTH'd0;
+        o_err   = 1'b0;
+        s_was1  = 1'b0;
+        // polacz B, A
+        i_onehot = {i_b_oh, i_a_oh};
 
+        for (i=0; i < (LEN+LEN); i = i+1)
+            if (i_onehot[i] == 1'b1)
+                if (s_was1)
+                    o_err = 1'b1;           // wyswietl blad jesli to kolejna jedynka
+                else
+                begin
+                    s_was1 = 1'b1;
+                    o_y_u2 = i;             // ustaw pamiec o tym, ze jedynka juz byla i przypisz wartosc na wyjscie w u2
+                end
+    end
+endmodule
 /*
     Modul rejestru potokowego z kontrola przeplywu
     danych synchronicznym protokolem READY-VALID
