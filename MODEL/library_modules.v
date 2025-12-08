@@ -5,10 +5,14 @@ module subtractor #(
 (
     input wire signed [WIDTH-1:0] i_a,
     input wire signed [WIDTH-1:0] i_b,
-    output reg signed [WIDTH-1:0] o_y
+    output reg signed [WIDTH-1:0] o_y,
+    output reg                    o_overflow,
+    output reg                    o_err
 )
 always @(*) begin
     o_y = i_a - i_b;
+    // overflow bedzie widac gdy przy przeciwnych znakach A, B Y bedzie miala znak przeciwny do A
+    o_overflow = (i_a[WIDTH-1] != i_b[WIDTH-1]) && (i_a[WIDTH-1] != o_y[WIDTH-1]); 
 end
 
 endmodule
@@ -19,10 +23,13 @@ module nand #(
 )
     input wire signed [WIDTH-1:0] i_a,
     input wire signed [WIDTH-1:0] i_b,
-    output reg signed [WIDTH-1:0] o_y
+    output reg signed [WIDTH-1:0] o_y,
+    output reg                    o_overflow,   // nie dotyczy
+    output reg                    o_err
 (
     always @(*) begin
         o_y = ~(A & B);                 // NAND = ~AND
+        o_overflow = 1'b0;
     end
 )
 endmodule
@@ -33,7 +40,9 @@ module starting_ones #(
 )
     input wire signed [WIDTH-1:0] i_a,
     input wire signed [WIDTH-1:0] i_b,
-    output reg        [WIDTH-1:0] o_y
+    output reg        [WIDTH-1:0] o_y,
+    output reg                    o_overflow,       // nie dotyczy 
+    output reg                    o_err
 (
     reg [WIDTH+WIDTH-1:0] c,
     integer i,
@@ -49,7 +58,10 @@ module starting_ones #(
                 count = count + 1
             else break;
 
-        o_y = count;
+
+        // ustaw overflow 1, jesli wiodących jedynek będzie więcej niż maksymanla warosc o_y (na razie WIDTH)
+        o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0
+        o_y = count[WIDTH-1:0];
     end
 )
 endmodule
@@ -65,16 +77,20 @@ module onehot2u2_decoder #(
     input wire [LEN-1:0] i_a_oh,
     input wire [LEN-1:0] i_b_oh,
     output reg [WIDTH-1:0] o_y_u2,
-    output reg             o_err             // byc może przydaa sie do flagi err
+    output reg             o_overflow,
+    output reg             o_err
 )
     reg s_was1;
     integer i;
+    integer posit;
     wire i_onehot;
     always @(*) begin
         // wyzeruj wartosci 
         o_y_u2 = WIDTH'd0;
+        o_overflow, = 1'b0;
         o_err   = 1'b0;
         s_was1  = 1'b0;
+        posit     = 0;
         // polacz B, A
         i_onehot = {i_b_oh, i_a_oh};
 
@@ -85,10 +101,45 @@ module onehot2u2_decoder #(
                 else
                 begin
                     s_was1 = 1'b1;
-                    o_y_u2 = i;             // ustaw pamiec o tym, ze jedynka juz byla i przypisz wartosc na wyjscie w u2
+                    posit = i;             // ustaw pamiec o tym, ze jedynka juz byla i przechowaj wartosc z oh
                 end
+        o_overflow = (posit > (2**WIDTH-1)) ? 1'b1 : 1'b0;
+        o_y_u2 = posit[WIDTH-1:0];
     end
 endmodule
+
+
+module ALU #(
+    parameter WIDTH = 4
+)
+(
+    input wire [WIDTH-1 : 0]    i_A,
+    input wire [WIDTH-1 : 0]    i_B,
+    input wire                  i_sel,
+    input wire                  i_CLK,
+    input wire                  i_RSTn,
+    input wire                  i_READY, i_VALID,
+    output wire                 o_READY, o_VALID,
+    output wire [WIDTH-1 : 0]   o_Y
+)
+    always @(*) begin
+        case(i_sel)
+            2'b00: subtractor #(.WIDTH(WIDTH))
+            (
+                .i_a(i_A)
+                .i_b(i_B)
+                .o_y(o_Y)
+            );
+            2'b01:
+            2'b10:
+            2'b11:
+            default: 
+        endcase
+    end
+endmodule
+
+
+
 /*
     Modul rejestru potokowego z kontrola przeplywu
     danych synchronicznym protokolem READY-VALID

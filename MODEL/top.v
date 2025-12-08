@@ -1,5 +1,4 @@
-module TOP 
-#(
+module TOP #(
     parameter WIDTH  = 4
 )
 (
@@ -18,7 +17,14 @@ module TOP
 
     assign s_y = i_A + i_B;
 
-
+    always @(*) begin
+        case(sel)
+            2'b00:
+            2'b01:
+            2'b10:
+            2'b11:
+        endcase
+    end
     cpreg #(.WIDTH(WIDTH))
         u_preg
             (
