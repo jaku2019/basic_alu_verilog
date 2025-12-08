@@ -8,42 +8,42 @@ module subtractor #(
     output reg signed [WIDTH-1:0] o_y,
     output reg                    o_overflow,
     output reg                    o_err
-)
-always @(*) begin
-    o_y = i_a - i_b;
-    // overflow bedzie widac gdy przy przeciwnych znakach A, B Y bedzie miala znak przeciwny do A
-    o_overflow = (i_a[WIDTH-1] != i_b[WIDTH-1]) && (i_a[WIDTH-1] != o_y[WIDTH-1]); 
-end
-
+);
+    always @(*) begin
+        o_y = i_a - i_b;
+        // overflow bedzie widac gdy przy przeciwnych znakach A, B Y bedzie miala znak przeciwny do A
+        o_overflow = (i_a[WIDTH-1] != i_b[WIDTH-1]) && (i_a[WIDTH-1] != o_y[WIDTH-1]); 
+    end
 endmodule
 
 // Y = A nand B czyli nandownik :)
 module nand #(
     parameter WIDTH = 4
 )
+(
     input wire signed [WIDTH-1:0] i_a,
     input wire signed [WIDTH-1:0] i_b,
     output reg signed [WIDTH-1:0] o_y,
     output reg                    o_overflow,   // nie dotyczy
     output reg                    o_err
-(
+);
     always @(*) begin
         o_y = ~(A & B);                 // NAND = ~AND
         o_overflow = 1'b0;
     end
-)
 endmodule
 
 // liczba wiodacych jedynek wektora {B,A} liczac od MSB, czyli wiodacy
 module starting_ones #(
     parameter WIDTH = 4
 )
+(
     input wire signed [WIDTH-1:0] i_a,
     input wire signed [WIDTH-1:0] i_b,
     output reg        [WIDTH-1:0] o_y,
     output reg                    o_overflow,       // nie dotyczy 
     output reg                    o_err
-(
+);
     reg [WIDTH+WIDTH-1:0] c,
     integer i,
     integer count,
@@ -63,7 +63,6 @@ module starting_ones #(
         o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0
         o_y = count[WIDTH-1:0];
     end
-)
 endmodule
 
 // onehot do u2 (a w zasadzie do nkb, bo nie moze byc ujemnych), czyli dekoder
@@ -71,7 +70,6 @@ module onehot2u2_decoder #(
     parameter LEN = 8
     // WIDTH musi wynosic tyle co log2(LEN+LEN)
     parameter WIDTH = 4,
-
 )
 (
     input wire [LEN-1:0] i_a_oh,
@@ -79,7 +77,7 @@ module onehot2u2_decoder #(
     output reg [WIDTH-1:0] o_y_u2,
     output reg             o_overflow,
     output reg             o_err
-)
+);
     reg s_was1;
     integer i;
     integer posit;
