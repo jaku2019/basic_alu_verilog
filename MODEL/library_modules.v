@@ -110,37 +110,6 @@ module onehot2u2_decoder #(
 endmodule
 
 
-module ALU #(
-    parameter WIDTH = 4
-)
-(
-    input wire [WIDTH-1 : 0]    i_A,
-    input wire [WIDTH-1 : 0]    i_B,
-    input wire                  i_sel,
-    input wire                  i_CLK,
-    input wire                  i_RSTn,
-    input wire                  i_READY, i_VALID,
-    output wire                 o_READY, o_VALID,
-    output wire [WIDTH-1 : 0]   o_Y
-)
-    always @(*) begin
-        case(i_sel)
-            2'b00: subtractor #(.WIDTH(WIDTH))
-            (
-                .i_a(i_A)
-                .i_b(i_B)
-                .o_y(o_Y)
-            );
-            2'b01:
-            2'b10:
-            2'b11:
-            default: 
-        endcase
-    end
-endmodule
-
-
-
 /*
     Modul rejestru potokowego z kontrola przeplywu
     danych synchronicznym protokolem READY-VALID
