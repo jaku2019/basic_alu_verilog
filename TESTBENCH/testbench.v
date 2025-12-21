@@ -27,7 +27,7 @@ module testbench;
                 .i_clk(s_CLK),
                 .i_rstn(s_RSTn),
                 .o_result(s_Y),
-                .o_flag(s_flag),
+                .o_flag(s_flag)
             );
 
     //

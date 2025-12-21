@@ -58,8 +58,6 @@ module starting_ones #(
         for (i = WIDTH+WIDTH-1; i >= 0; i = i-1)
             if (c[i] == 1)
                 count = count + 1;
-            else break;
-
 
         // ustaw overflow 1, jesli wiodących jedynek będzie więcej niż maksymanla warosc o_y (na razie WIDTH)
         o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0;
@@ -84,10 +82,10 @@ module onehot2u2_decoder #(
     reg s_was1;
     integer i;
     integer posit;
-    wire i_onehot;
+    reg [LEN+LEN-1:0] i_onehot;
     always @(*) begin
         // wyzeruj wartosci 
-        o_y_u2 = WIDTH'd0;
+        o_y_u2 = 0;
         o_overflow = 1'b0;
         o_err   = 1'b0;
         s_was1  = 1'b0;
