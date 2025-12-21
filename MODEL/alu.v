@@ -27,7 +27,7 @@ module TOP #(
         .o_overflow(sub_overflow)
         .o_err(sub_err)
     );
-    nand #(.WIDTH(WIDTH))
+    nand_gate #(.WIDTH(WIDTH))
     (
         .i_a(i_arg0)
         .i_b(i_arg1)

@@ -18,7 +18,7 @@ module subtractor #(
 endmodule
 
 // Y = A nand B czyli nandownik :)
-module nand #(
+module nand_gate #(
     parameter WIDTH = 4
 )
 (
