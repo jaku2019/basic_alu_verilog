@@ -1,11 +1,11 @@
 module TOP #(
     parameter WIDTH = 4,
-    parameter LEN = 2
+    parameter LEN = 1
 )
 (
     input wire [WIDTH-1 : 0]    i_arg0,
     input wire [WIDTH-1 : 0]    i_arg1,
-    input wire                  i_oper,
+    input wire [1:0]            i_oper,
     input wire                  i_clk,
     input wire                  i_rstn,
     output reg [3:0]            o_flag,

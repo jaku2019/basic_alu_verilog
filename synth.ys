@@ -1,0 +1,28 @@
+# Yosys synthesis script
+# Read Verilog files
+read_verilog MODEL/library_modules.v
+read_verilog MODEL/alu.v
+
+# Set top module
+hierarchy -top TOP
+
+# High-level synthesis
+proc
+opt
+fsm
+opt
+memory
+opt
+
+# Technology mapping
+techmap
+opt
+
+# Clean up
+clean
+
+# Statistics
+stat
+
+# Write output
+write_verilog synth_output.v

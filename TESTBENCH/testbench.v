@@ -18,7 +18,7 @@ module testbench;
     localparam FLAG_OVERFLOW = 3; 
 
     // Modul nadrzedny hierarchii projektu
-    TOP #(.WIDTH(DATA_WIDTH), .LEN(2))   // Nazwa modulu -- MUSI BYC TOP ze wzgledu na skrypty symulacyjne i syntezy
+    TOP #(.WIDTH(DATA_WIDTH), .LEN(DATA_WIDTH))   // Nazwa modulu -- MUSI BYC TOP ze wzgledu na skrypty symulacyjne i syntezy
         UTOP                    // Nazwa instancji -- MUSI BYC UTOP ze wzgledu na skrypty syntezy logicznej i symulacji
             (
                 .i_arg0(s_A),
