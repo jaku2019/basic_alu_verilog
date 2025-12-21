@@ -46,23 +46,25 @@ module starting_ones #(
     output reg                    o_overflow, 
     output reg                    o_err             // nie dotyczy
 );
-    reg [WIDTH+WIDTH-1:0] c,
-    integer i,
-    integer count,
+    reg [WIDTH+WIDTH-1:0] c;
+    integer i;
+    integer count;
 
     always @(*) begin
         // polaczenie wektorow
         c = {i_b, i_a};
         count = 0;
     // sprawdz od MSB ile jest 1, a jesli pojawi sie 0 to przerwij fora = przestan liczyc
-        for (i = WIDTH+WIDTH-1; i >= 0; i = i-1)
-            if c[i] == 1
-                count = count + 1
-            else break;
+        for (i = WIDTH+WIDTH-1; i >= 0; i = i-1) begin
+            if (c[i] == 1)
+                count = count + 1;
+            else
+                i = -1;  // exit loop
+        end
 
 
         // ustaw overflow 1, jesli wiodących jedynek będzie więcej niż maksymanla warosc o_y (na razie WIDTH)
-        o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0
+        o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0;
         o_err = 1'b0;
         o_y = count[WIDTH-1:0];
     end
@@ -70,9 +72,9 @@ endmodule
 
 // onehot do u2 (a w zasadzie do nkb, bo nie moze byc ujemnych), czyli dekoder
 module onehot2u2_decoder #(
-    parameter LEN = 8
+    parameter LEN = 8,
     // WIDTH musi wynosic tyle co log2(LEN+LEN)
-    parameter WIDTH = 4,
+    parameter WIDTH = 4
 )
 (
     input wire [LEN-1:0] i_a_oh,
@@ -88,7 +90,7 @@ module onehot2u2_decoder #(
     always @(*) begin
         // wyzeruj wartosci 
         o_y_u2 = WIDTH'd0;
-        o_overflow, = 1'b0;
+        o_overflow = 1'b0;
         o_err   = 1'b0;
         s_was1  = 1'b0;
         posit     = 0;

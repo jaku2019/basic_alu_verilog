@@ -10,48 +10,51 @@ module TOP #(
     input wire                  i_rstn,
     output reg [3:0]            o_flag,
     output reg [WIDTH-1 : 0]    o_result
-)
+);
 
     wire [WIDTH-1:0] sub_result, nand_result, oh_result, decoder_result;
     wire sub_overflow, sub_err;
     wire nand_overflow, nand_err;
-    wire oh_result, oh_result;
+    wire oh_overflow, oh_err;
     wire decoder_overflow, decoder_err;
 
     
     subtractor #(.WIDTH(WIDTH))
+    u_subtractor
     (
-        .i_a(i_arg0)
-        .i_b(i_arg1)
-        .o_y(o_result)
-        .o_overflow(sub_overflow)
+        .i_a(i_arg0),
+        .i_b(i_arg1),
+        .o_y(sub_result),
+        .o_overflow(sub_overflow),
         .o_err(sub_err)
     );
     nand_gate #(.WIDTH(WIDTH))
+    u_nand_gate
     (
-        .i_a(i_arg0)
-        .i_b(i_arg1)
-        .o_y(o_result)
-        .o_overflow(nand_overflow)
+        .i_a(i_arg0),
+        .i_b(i_arg1),
+        .o_y(nand_result),
+        .o_overflow(nand_overflow),
         .o_err(nand_err)
-    )
+    );
     starting_ones #(.WIDTH(WIDTH))
+    u_starting_ones
     (
-        .i_a(i_arg0)
-        .i_b(i_arg1)
-        .o_y(o_result)
-        .o_overflow(oh_result)
-        .o_err(oh_result)                
-    )
+        .i_a(i_arg0),
+        .i_b(i_arg1),
+        .o_y(oh_result),
+        .o_overflow(oh_overflow),
+        .o_err(oh_err)
+    );
     onehot2u2_decoder #(.LEN(LEN), .WIDTH(WIDTH))
+    u_decoder
     (
-        .i_a_oh(i_arg0)
-        .i_b_oh(i_arg1)
-        .o_y_u2(o_result)
-        .o_overflow(decoder_overflow)
-        .o_err(decoder_err)                    
-    )
-    default: assign o_y = 0;
+        .i_a_oh(i_arg0),
+        .i_b_oh(i_arg1),
+        .o_y_u2(decoder_result),
+        .o_overflow(decoder_overflow),
+        .o_err(decoder_err)
+    );
 
     // sygnaly temp do flag
     reg temp_overflow, temp_err, temp_neg, temp_pos;
@@ -75,8 +78,8 @@ module TOP #(
             end
             2'b10: begin
                 o_result = oh_result;
-                temp_overflow = oh_result;
-                temp_err = oh_result;                                
+                temp_overflow = oh_overflow;
+                temp_err = oh_err;                                
             end
             2'b11: begin
                 o_result = decoder_result;

@@ -33,7 +33,7 @@ module testbench;
     //
     // Komponenty symulacyjne
     //
-    intiger i;
+    integer i;
     initial begin
         s_A = 0;
         s_B = 0;
