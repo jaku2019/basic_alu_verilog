@@ -12,10 +12,10 @@ module TOP #(
     output reg [WIDTH-1 : 0]    o_result
 )
 
-    wire [WIDTH-1:0] sub_result, nand_result, ones_result, decoder_result;
+    wire [WIDTH-1:0] sub_result, nand_result, oh_result, decoder_result;
     wire sub_overflow, sub_err;
     wire nand_overflow, nand_err;
-    wire ones_overflow, ones_err;
+    wire oh_result, oh_result;
     wire decoder_overflow, decoder_err;
 
     
@@ -40,8 +40,8 @@ module TOP #(
         .i_a(i_arg0)
         .i_b(i_arg1)
         .o_y(o_result)
-        .o_overflow(ones_overflow)
-        .o_err(ones_err)                
+        .o_overflow(oh_result)
+        .o_err(oh_result)                
     )
     onehot2u2_decoder #(.LEN(LEN), .WIDTH(WIDTH))
     (
@@ -74,9 +74,9 @@ module TOP #(
                 temp_err = nand_err;                
             end
             2'b10: begin
-                o_result = ones_result;
-                temp_overflow = ones_overflow;
-                temp_err = ones_err;                                
+                o_result = oh_result;
+                temp_overflow = oh_result;
+                temp_err = oh_result;                                
             end
             2'b11: begin
                 o_result = decoder_result;
