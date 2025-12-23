@@ -1,0 +1,8 @@
+post_synth.vcd
+post_synth.vvp
+pre_synth.vcd
+pre_synth.vvp
+SIGNALS_post.vcd
+SIGNALS_pre.vcd
+SIGNALS.vcd
+sim.out
