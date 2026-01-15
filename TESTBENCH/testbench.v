@@ -51,7 +51,7 @@ module testbench;
             s_sel = $random;
         end
         
-        // test na konkretnych wartościach
+        // test na konkretnych wartosciach
         @(posedge s_CLK);
         s_A = 4'b0101;
         s_B = 4'b0011;
