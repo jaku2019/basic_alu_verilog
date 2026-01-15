@@ -58,42 +58,55 @@ module TOP #(
 
     // sygnaly temp do flag
     reg temp_overflow, temp_err, temp_neg, temp_pos;
+    reg signed [WIDTH-1:0] o_result_next;
+    reg [2:0] o_flag_next;
 
     always @(*) begin
         o_result = 0;
+        o_result_next = 0;
         temp_overflow = 0;
         temp_err = 0;
         temp_neg = 0;
         temp_pos = 0;
         case(i_oper)
             2'b00: begin
-                o_result = sub_result;
+                o_result_next = sub_result;
                 temp_overflow = sub_overflow;
                 temp_err = sub_err;
             end
             2'b01: begin
-                o_result = nand_result;
+                o_result_next = nand_result;
                 temp_overflow = nand_overflow;
                 temp_err = nand_err;                
             end
             2'b10: begin
-                o_result = oh_result;
+                o_result_next = oh_result;
                 temp_overflow = oh_overflow;
                 temp_err = oh_err;                                
             end
             2'b11: begin
-                o_result = decoder_result;
+                o_result_next = decoder_result;
                 temp_overflow = decoder_overflow;
                 temp_err = decoder_err;                                
             end
         endcase
-    temp_pos = ~o_result[WIDTH-1] & (o_result != 0);
-    temp_neg = o_result[WIDTH-1] & (o_result != 0);
+    temp_pos = ~o_result_next[WIDTH-1] & (o_result_next != 0);
+    temp_neg = o_result_next[WIDTH-1] & (o_result_next != 0);
 
     // wszystkie flagi na jednym wyjsciu
-    o_flag[0] = temp_err;
-    o_flag[1] = temp_neg;
-    o_flag[2] = temp_pos;
-    o_flag[3] = temp_overflow;
+    o_flag_next[0] = temp_err;
+    o_flag_next[1] = temp_neg;
+    o_flag_next[2] = temp_pos;
+    o_flag_next[3] = temp_overflow;
     end
+
+    always @(posedge i_clk or negedge i_rstn)
+        if (i_rstn == 1) begin
+            o_result <= {WIDTH{1'b0}};
+            o_flag <= {4{1'b0}};
+        end
+        else begin
+            o_result <= o_result_next;
+            o_flag <= o_flag_next;
+        end
 endmodule

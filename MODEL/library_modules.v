@@ -49,15 +49,20 @@ module starting_ones #(
     reg [WIDTH+WIDTH-1:0] c;
     integer i;
     integer count;
+    integer break;
 
     always @(*) begin
         // polaczenie wektorow
         c = {i_b, i_a};
         count = 0;
+        break = 0;
+
     // sprawdz od MSB ile jest 1, a jesli pojawi sie 0 to przerwij fora = przestan liczyc
         for (i = WIDTH+WIDTH-1; i >= 0; i = i-1)
-            if (c[i] == 1)
+            if (break == 0 && c[i] == 1)
                 count = count + 1;
+            else
+                break = 1;
 
         // ustaw overflow 1, jesli wiodących jedynek będzie więcej niż maksymanla warosc o_y (na razie WIDTH)
         o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0;
