@@ -3,8 +3,8 @@ module testbench;
 
     localparam DATA_WIDTH = 4;
 
-    reg [DATA_WIDTH-1:0] s_A, s_B;
-    wire [DATA_WIDTH-1:0] s_Y;
+    reg signed [DATA_WIDTH-1:0] s_A, s_B;
+    wire signed [DATA_WIDTH-1:0] s_Y;
     reg [1:0] s_sel;
     wire s_CLK;
     wire s_RSTn;
