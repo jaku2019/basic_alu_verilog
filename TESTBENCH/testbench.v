@@ -40,7 +40,7 @@ module testbench;
         s_sel = 0;
 
         //reset
-        @(posedge s_RSTn);;
+        @(posedge s_RSTn);
         @(posedge s_CLK);
 
         // test wszystkich kombinacji

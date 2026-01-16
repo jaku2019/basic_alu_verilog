@@ -40,9 +40,9 @@ module starting_ones #(
     parameter WIDTH = 4
 )
 (
-    input wire signed [WIDTH-1:0] i_a,
-    input wire signed [WIDTH-1:0] i_b,
-    output reg        [WIDTH-1:0] o_y,
+    input wire        [WIDTH-1:0] i_a,
+    input wire        [WIDTH-1:0] i_b,
+    output reg signed [WIDTH-1:0] o_y,
     output reg                    o_overflow, 
     output reg                    o_err             // nie dotyczy
 );
@@ -80,7 +80,7 @@ module onehot2u2_decoder #(
 (
     input wire [LEN-1:0] i_a_oh,
     input wire [LEN-1:0] i_b_oh,
-    output reg [WIDTH-1:0] o_y_u2,
+    output reg signed [WIDTH-1:0] o_y_u2,
     output reg             o_overflow,
     output reg             o_err
 );
