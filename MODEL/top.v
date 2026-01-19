@@ -3,13 +3,13 @@ module TOP #(
     parameter LEN = 1
 )
 (
-    input wire [WIDTH-1 : 0]    i_arg0,
-    input wire [WIDTH-1 : 0]    i_arg1,
-    input wire [1:0]            i_oper,
-    input wire                  i_clk,
-    input wire                  i_rstn,
-    output reg [3:0]            o_flag,
-    output reg [WIDTH-1 : 0]    o_result
+    input wire signed [WIDTH-1 : 0]    i_arg0,
+    input wire signed [WIDTH-1 : 0]    i_arg1,
+    input wire [1:0]                   i_oper,
+    input wire                         i_clk,
+    input wire                         i_rstn,
+    output reg [3:0]                   o_flag,
+    output reg signed [WIDTH-1 : 0]    o_result
 );
 
     wire [WIDTH-1:0] sub_result, nand_result, oh_result, decoder_result;

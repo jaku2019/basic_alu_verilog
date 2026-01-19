@@ -10,6 +10,7 @@ module subtractor #(
     output reg                    o_err             // nie dotyczy
 );
     always @(*) begin
+        o_y = 0;
         o_y = i_a - i_b;
         // overflow bedzie widac gdy przy przeciwnych znakach A, B Y bedzie miala znak przeciwny do A
         o_overflow = (i_a[WIDTH-1] != i_b[WIDTH-1]) && (i_a[WIDTH-1] != o_y[WIDTH-1]);
@@ -29,6 +30,7 @@ module nand_gate #(
     output reg                    o_err         // nie dotyczy
 );
     always @(*) begin
+        o_y = 0;
         o_y = ~(i_a & i_b);                 // NAND = ~AND
         o_overflow = 1'b0;
         o_err = 1'b0;
@@ -40,9 +42,9 @@ module starting_ones #(
     parameter WIDTH = 4
 )
 (
-    input wire signed [WIDTH-1:0] i_a,
-    input wire signed [WIDTH-1:0] i_b,
-    output reg        [WIDTH-1:0] o_y,
+    input wire        [WIDTH-1:0] i_a,
+    input wire        [WIDTH-1:0] i_b,
+    output reg signed [WIDTH-1:0] o_y,
     output reg                    o_overflow, 
     output reg                    o_err             // nie dotyczy
 );
@@ -52,6 +54,7 @@ module starting_ones #(
     integer break;
 
     always @(*) begin
+        o_y = 0;
         // polaczenie wektorow
         c = {i_b, i_a};
         count = 0;
@@ -80,7 +83,7 @@ module onehot2u2_decoder #(
 (
     input wire [LEN-1:0] i_a_oh,
     input wire [LEN-1:0] i_b_oh,
-    output reg [WIDTH-1:0] o_y_u2,
+    output reg signed [WIDTH-1:0] o_y_u2,
     output reg             o_overflow,
     output reg             o_err
 );

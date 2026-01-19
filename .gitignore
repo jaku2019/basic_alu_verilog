@@ -6,3 +6,5 @@ SIGNALS_post.vcd
 SIGNALS_pre.vcd
 SIGNALS.vcd
 sim.out
+/WORK
+/TESTBENCH/testbench_post_synth.v
