@@ -6,18 +6,17 @@ module testbench;
     reg signed [DATA_WIDTH-1:0] s_A, s_B;
     wire signed [DATA_WIDTH-1:0] s_Y;
     reg [1:0] s_sel;
-    reg s_CLK;
-    reg s_RSTn;
+    wire s_CLK;
+    wire s_RSTn;
     
     wire [3:0] s_flag;  
     
     // pozycje sygnalu _flag
-/*
     localparam FLAG_ERR      = 0;
     localparam FLAG_NEG      = 1;
     localparam FLAG_POS      = 2;
     localparam FLAG_OVERFLOW = 3; 
-*/
+
     // Modul nadrzedny hierarchii projektu
     TOP #(.WIDTH(DATA_WIDTH), .LEN(DATA_WIDTH))   // Nazwa modulu -- MUSI BYC TOP ze wzgledu na skrypty symulacyjne i syntezy
         UTOP                    // Nazwa instancji -- MUSI BYC UTOP ze wzgledu na skrypty syntezy logicznej i symulacji
@@ -34,51 +33,51 @@ module testbench;
     //
     // Komponenty symulacyjne
     //
-
-    initial begin
-        s_CLK = 0;
-        forever #5 s_CLK = ~s_CLK; // zmiana stanu co 5 jednostek czasu
-    end
-    
+    integer i;
     initial begin
         s_A = 0;
         s_B = 0;
         s_sel = 0;
-        s_RSTn = 0;
-        #15 s_RSTn = 1;
 
-        @(posedge s_CLK)
+        //reset
+        @(posedge s_RSTn);;
+        @(posedge s_CLK);
 
-        // 00 Odejmowanie 7-3=4
-        s_A = 4'd7;
-        s_B = 4'd3;
+        // test wszystkich kombinacji
+        for (i = 0; i < 50; i = i+1) begin
+            @(posedge s_CLK);
+            s_A = $random;
+            s_B = $random;
+            s_sel = $random;
+        end
+        
+        // test na konkretnych wartosciach
+        @(posedge s_CLK);
+        s_A = 4'b0101;
+        s_B = 4'b0011;
         s_sel = 2'b00;  // substractor
-        @(posedge s_CLK);
 
-        // 01 NAND ~(1111&0001)=1110
+        @(posedge s_CLK);
         s_A = 4'b1111;
-        s_B = 4'b0001;
-        s_sel = 2'b01;  // NAND
-        @(posedge s_CLK);
+        s_B = 4'b0000;
+        s_sel = 2'b01;  // nand
 
-        // 10 Starting ones  {B, A} = (11001111) = 2
+        @(posedge s_CLK);
         s_A = 4'b1100;
-        s_B = 4'b1111;
-        s_sel = 2'b10;  // starting ones
-        @(posedge s_CLK);
+        s_B = 4'b0011;
+        s_sel = 2'b10;  // starting_ones
 
-        // 11 OH decoder {B,A} = 0100, 0000 = 6
-        s_A = 4'b0000;
-        s_B = 4'b0100;
-        s_sel = 2'b11;  // OH
         @(posedge s_CLK);
+        s_A = 4'b0010;
+        s_B = 4'b1000;
+        s_sel = 2'b11;  // onehot2u2_decoder
     end
     
-    /* Generator globalnych sygnalow CLK i RST oraz zakonczenia symulacji
+    // Generator globalnych sygnalow CLK i RST oraz zakonczenia symulacji
     global_signals #(.SIM_CLOCK_CYCLES(100), .CLOCK_PERIOD(10))
         U_RST_CLK
             (.o_CLK(s_CLK), .o_RSTn(s_RSTn));
-*/
+
 
 endmodule
 
