@@ -62,7 +62,6 @@ module TOP #(
     reg [2:0] o_flag_next;
 
     always @(*) begin
-        o_result = 0;
         o_result_next = 0;
         temp_overflow = 0;
         temp_err = 0;
@@ -101,9 +100,9 @@ module TOP #(
     end
 
     always @(posedge i_clk or negedge i_rstn)
-        if (i_rstn == 1) begin
-            o_result <= {WIDTH{1'b0}};
-            o_flag <= {4{1'b0}};
+        if (i_rstn == 0) begin
+            o_result <= 0;
+            o_flag <= 0;
         end
         else begin
             o_result <= o_result_next;

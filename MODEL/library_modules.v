@@ -59,18 +59,21 @@ module starting_ones #(
         c = {i_b, i_a};
         count = 0;
         break = 0;
-
+        $display(c);
     // sprawdz od MSB ile jest 1, a jesli pojawi sie 0 to przerwij fora = przestan liczyc
-        for (i = WIDTH+WIDTH-1; i >= 0; i = i-1)
-            if (break == 0 && c[i] == 1)
+        for (i = WIDTH+WIDTH-1; i >= 0; i = i-1) begin
+            if ((break == 0) && (c[i] == 1)) begin
                 count = count + 1;
-            else
+            end
+            else begin
                 break = 1;
+            end
+        end
 
         // ustaw overflow 1, jesli wiodących jedynek będzie więcej niż maksymanla warosc o_y (na razie WIDTH)
         o_overflow = (count > (2**WIDTH-1)) ? 1'b1 : 1'b0;
         o_err = 1'b0;
-        o_y = count[WIDTH-1:0];
+        o_y = count;
     end
 endmodule
 
