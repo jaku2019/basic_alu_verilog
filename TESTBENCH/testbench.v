@@ -48,24 +48,26 @@ module testbench;
         #15 s_RSTn = 1;
 
         @(posedge s_CLK)
+        $display("PO RESECIE: o_result_next = %d, o_result = %d", UTOP.o_result_next, UTOP.o_result);
 
         // 00 Odejmowanie 7-3=4
-        s_A = 4'd7;
-        s_B = 4'd3;
+        s_A = 4'd3;
+        s_B = 4'd7;
         s_sel = 2'b00;  // substractor
         @(posedge s_CLK);
+        $display("o_result_next = %d, o_result = %d", UTOP.o_result_next, UTOP.o_result);
         // 01 NAND ~(1111&0001)=1110
         s_A = 4'b1111;
         s_B = 4'b0001;
         s_sel = 2'b01;  // NAND
         @(posedge s_CLK);
-
+        $display("o_result_next = %d, o_result = %d", UTOP.o_result_next, UTOP.o_result);
         // 10 Starting ones  {B, A} = (11001111) = 2
         s_A = 4'b1100;
         s_B = 4'b1111;
         s_sel = 2'b10;  // starting ones
         @(posedge s_CLK);
-
+        $display("o_result_next = %d, o_result = %d", UTOP.o_result_next, UTOP.o_result);
         // 11 OH decoder {B,A} = 0100, 0000 = 6
         s_A = 4'b0000;
         s_B = 4'b0100;

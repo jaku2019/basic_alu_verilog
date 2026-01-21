@@ -22,7 +22,7 @@ module TOP #(
     // sygnaly dla "opoznienia" na koncu
     reg temp_overflow, temp_err, temp_neg, temp_pos;
     reg signed [WIDTH-1:0] o_result_next;
-    reg [2:0] o_flag_next;
+    reg [3:0] o_flag_next;
 
     subtractor #(.WIDTH(WIDTH))
     u_subtractor
