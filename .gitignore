@@ -8,3 +8,7 @@ SIGNALS.vcd
 sim.out
 /WORK
 /TESTBENCH/testbench_post_synth.v
+post_synth.vvp
+sim.out
+synth_output.v
+testbench_old.v
