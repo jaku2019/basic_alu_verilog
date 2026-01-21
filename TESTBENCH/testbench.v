@@ -54,7 +54,6 @@ module testbench;
         s_B = 4'd3;
         s_sel = 2'b00;  // substractor
         @(posedge s_CLK);
-
         // 01 NAND ~(1111&0001)=1110
         s_A = 4'b1111;
         s_B = 4'b0001;
