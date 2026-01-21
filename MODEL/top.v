@@ -12,13 +12,18 @@ module TOP #(
     output reg signed [WIDTH-1 : 0]    o_result
 );
 
-    wire [WIDTH-1:0] sub_result, nand_result, oh_result, decoder_result;
+    wire signed [WIDTH-1:0] sub_result, nand_result, oh_result, decoder_result;
     wire sub_overflow, sub_err;
     wire nand_overflow, nand_err;
     wire oh_overflow, oh_err;
     wire decoder_overflow, decoder_err;
 
-    
+  
+    // sygnaly dla "opoznienia" na koncu
+    reg temp_overflow, temp_err, temp_neg, temp_pos;
+    reg signed [WIDTH-1:0] o_result_next;
+    reg [2:0] o_flag_next;
+
     subtractor #(.WIDTH(WIDTH))
     u_subtractor
     (
@@ -56,10 +61,6 @@ module TOP #(
         .o_err(decoder_err)
     );
 
-    // sygnaly temp do flag
-    reg temp_overflow, temp_err, temp_neg, temp_pos;
-    reg signed [WIDTH-1:0] o_result_next;
-    reg [2:0] o_flag_next;
 
     always @(*) begin
         o_result_next = 0;
