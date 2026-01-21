@@ -72,8 +72,13 @@ module testbench;
         s_B = 4'b0100;
         s_sel = 2'b11;  // OH
         @(posedge s_CLK);
+
+        // Czekaj kilka cykli i zakoncz symulacje
+        repeat (5) @(posedge s_CLK);
+        $finish;
     end
     
+
     /* Generator globalnych sygnalow CLK i RST oraz zakonczenia symulacji
     global_signals #(.SIM_CLOCK_CYCLES(100), .CLOCK_PERIOD(10))
         U_RST_CLK
