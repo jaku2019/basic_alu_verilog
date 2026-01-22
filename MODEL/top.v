@@ -1,6 +1,6 @@
 module TOP #(
     parameter WIDTH = 4,
-    parameter LEN = 1
+    parameter LEN = 4
 )
 (
     input wire signed [WIDTH-1 : 0]    i_arg0,

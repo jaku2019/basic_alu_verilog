@@ -19,7 +19,7 @@ module testbench;
     localparam FLAG_OVERFLOW = 3; 
 */
     // Modul nadrzedny hierarchii projektu
-    TOP #(.WIDTH(DATA_WIDTH), .LEN(DATA_WIDTH))   // Nazwa modulu -- MUSI BYC TOP ze wzgledu na skrypty symulacyjne i syntezy
+    TOP #(.WIDTH(DATA_WIDTH), .LEN(DATA_WIDTH)) // Nazwa modulu -- MUSI BYC TOP ze wzgledu na skrypty symulacyjne i syntezy
         UTOP                    // Nazwa instancji -- MUSI BYC UTOP ze wzgledu na skrypty syntezy logicznej i symulacji
             (
                 .i_arg0(s_A),
@@ -37,7 +37,7 @@ module testbench;
 
     initial begin
         s_CLK = 0;
-        forever #5 s_CLK = ~s_CLK; // zmiana stanu co 5 jednostek czasu
+        forever #100 s_CLK = ~s_CLK; // zmiana stanu co 5 jednostek czasu
     end
     
     initial begin
@@ -45,16 +45,15 @@ module testbench;
         s_B = 0;
         s_sel = 0;
         s_RSTn = 0;
-        #15 s_RSTn = 1;
+        @(negedge s_CLK); #1; 
+        s_RSTn = 1;
         @(negedge s_CLK);
-        $display("PO RESECIE: o_result_next = %d, o_result = %d", UTOP.o_result_next, UTOP.o_result);
-
+        //@(negedge s_CLK);
         // 00 Odejmowanie 7-3=4
         s_A = 4'd4;
         s_B = 4'd7;
         s_sel = 2'b00;  // substractor
         @(negedge s_CLK);
-        $display("o_result_next = %d, o_result = %d", UTOP.o_result_next, UTOP.o_result);
         // 01 NAND ~(1111&0001)=1110
         s_A = 4'b1111;
         s_B = 4'b0001;
