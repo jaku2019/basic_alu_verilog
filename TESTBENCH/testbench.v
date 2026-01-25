@@ -49,26 +49,43 @@ module testbench;
         s_RSTn = 1;
         @(negedge s_CLK);
         //@(negedge s_CLK);
+
         // 00 Odejmowanie 7-3=4
         s_A = 4'd4;
         s_B = 4'd7;
         s_sel = 2'b00;  // substractor
         @(negedge s_CLK);
+
         // 01 NAND ~(1111&0001)=1110
         s_A = 4'b1111;
         s_B = 4'b0001;
         s_sel = 2'b01;  // NAND
         @(negedge s_CLK);
+
         // 10 Starting ones  {B, A} = (11001111) = 2
         s_A = 4'b1100;
         s_B = 4'b1111;
         s_sel = 2'b10;  // starting ones
         @(negedge s_CLK);
+
         // 11 OH decoder {B,A} = 0100, 0000 = 6
         s_A = 4'b0000;
         s_B = 4'b0100;
         s_sel = 2'b11;  // OH
         @(negedge s_CLK);
+
+        // test flagi overflow
+        s_A = 4'b0111;    // +7
+        s_B = 4'b1000;    // -8  
+        s_sel = 2'b00;    // subtractor
+        @(negedge s_CLK);
+
+        //teset flagi error
+        s_A = 4'b0101;    // wiele jedynek - zly OH
+        s_B = 4'b0000;    
+        s_sel = 2'b11;    //OH
+        @(negedge s_CLK);
+        
 
         // Czekaj kilka cykli i zakoncz symulacje
         repeat (5) @(negedge s_CLK);
