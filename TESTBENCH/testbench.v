@@ -50,7 +50,7 @@ module testbench;
         @(negedge s_CLK);
         //@(negedge s_CLK);
 
-        // 00 Odejmowanie 7-3=4
+        // 00 Odejmowanie 4-7=-3
         s_A = 4'd4;
         s_B = 4'd7;
         s_sel = 2'b00;  // substractor
