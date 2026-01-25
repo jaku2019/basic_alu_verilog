@@ -62,7 +62,7 @@ module testbench;
         s_sel = 2'b01;  // NAND
         @(negedge s_CLK);
 
-        // 10 Starting ones  {B, A} = (11001111) = 2
+        // 10 Starting ones  {B, A} = (11111100) = 6
         s_A = 4'b1100;
         s_B = 4'b1111;
         s_sel = 2'b10;  // starting ones
