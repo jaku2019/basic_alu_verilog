@@ -37,7 +37,7 @@ module testbench;
 
     initial begin
         s_CLK = 0;
-        forever #100 s_CLK = ~s_CLK; // zmiana stanu co 5 jednostek czasu
+        forever #100 s_CLK = ~s_CLK; // zmiana stanu co 100 jednostek czasu
     end
     
     initial begin
